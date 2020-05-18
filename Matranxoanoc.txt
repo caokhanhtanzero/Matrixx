@@ -1,0 +1,85 @@
+#include<stdio.h>
+
+int hamGan1(int Arr[][100], int m, int n, int chay, int hang, int cotdau, int cotcuoi) {	//tichcheo
+	int i, j ;
+	for(i = 0; i < m; i++) {
+		for(j = 0; j < n; j++) {
+			if(i == hang && (j >= cotdau && j < cotcuoi-1)) {
+					Arr[i][j] = chay;
+					chay ++;
+				}
+		}
+    }
+	return chay;	
+}
+
+int hamGan2(int Arr[][100], int m, int n, int chay, int cotcuoi , int dongdau, int dongcuoi) {	//dmpv
+	int i, j ;
+	for(i = 0; i < m; i++) {
+		for(j = 0; j < n; j++) {
+			if((i < dongcuoi - 1 && i >= dongdau) && (j == cotcuoi - 1)) {
+				Arr[i][j] = chay;
+				chay++;
+			}
+		}
+    }
+	return chay;	
+}
+
+int hamGan3(int Arr[][100], int m, int n, int chay, int dong, int cotdau, int cotcuoi) {	//gandongcuoi1
+	int i, j;
+	for(i = 0; i < m; i++) {
+		for(j = n - 1; j >= 0; j--) {
+			if(i == dong && (j < cotcuoi && j > cotdau)) {
+				Arr[i][j] = chay;
+				chay++;
+			}
+		}
+    }
+	return chay;	
+}
+
+int hamGan4(int Arr[][100], int m, int n, int chay, int cot, int dongdau, int dongcuoi) {	//gancot
+	int i, j;
+	for(i = m - 1; i >= 0; i--) {
+		for(j = 0; j < n; j ++){
+			if((i > dongdau && i < dongcuoi) && j == dongdau){
+				Arr[i][j] = chay;
+				chay++;
+			}
+		}
+    }
+	return chay;	
+}
+
+int main() {
+	int i, j, m, n, chay = 1; 
+	scanf("%d%d", &m, &n);
+	int Arr[100][100], hang = 0, cotdau = 0, cotcuoi = n, hangcuoi = m;
+	
+	while(chay <= m*n) {
+		chay = hamGan1(Arr, m, n, chay, hang, cotdau, cotcuoi);
+		if(chay >= m*n)
+			break;
+		chay = hamGan2(Arr, m, n, chay, cotcuoi, hang, hangcuoi);
+		if(chay >= m*n)
+			break;
+		chay = hamGan3(Arr, m, n, chay, hangcuoi - 1, cotdau, cotcuoi);
+		if(chay >= m*n)
+			break;
+		chay = hamGan4(Arr, m, n, chay, cotdau, hang, hangcuoi);
+		hang ++;
+		cotdau ++;
+		cotcuoi --;
+		hangcuoi --;
+	}
+	for(i = 0; i < m; i++) {
+		for(j = 0; j < n; j++) {	
+			if(Arr[i][j] == 0)
+				Arr[i][j] = m*n;
+			printf(" %d\t ", Arr[i][j]);
+		}
+		printf("\n");
+	}
+	return 0;
+}
